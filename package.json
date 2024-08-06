@@ -1,0 +1,19 @@
+{
+  "name": "posts-project",
+  "version": "1.0.0",
+  "description": "Creating a website where a user can create, view, edit and delete there posts, login and logout using authentication, MongoDB database for storing data, and also using the concepts of data association.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "ejs": "^3.1.10",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.2"
+  }
+}
