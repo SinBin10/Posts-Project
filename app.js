@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const userSchema = require("./models/user");
+const postSchema = require("./models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cookieparser = require("cookie-parser");
@@ -16,18 +17,38 @@ app.get("/", (req, res) => {
   res.render("Home");
 });
 
+app.get("/login", (req, res) => {
+  res.render("login");
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+  let user = await userSchema.findOne({ email });
+  if (!user) return res.send("Something went wrong");
+  bcrypt.compare(password, user.password, (err, result) => {
+    console.log(result);
+    if (result === true) {
+      let token = jwt.sign({ email: user.email, userid: user._id }, "shhhhhhh");
+      res.cookie("token", token);
+      res.redirect("/posts");
+    } else {
+      res.redirect("/login");
+    }
+  });
+});
+
 app.get("/create", (req, res) => {
   res.render("create");
 });
 
-app.get("/post/:userId", (req, res) => {
-  res.send("account created succesfully");
+app.get("/posts", (req, res) => {
+  res.send("your posts");
 });
 
-app.post("/createuser", (req, res) => {
+app.post("/createuser", async (req, res) => {
   let { name, email, password, age } = req.body;
 
-  let user = userSchema.findOne({ email });
+  let user = await userSchema.findOne({ email });
   if (user) return res.status(500).send("User already exists...");
 
   user = bcrypt.genSalt(10, (err, salt) => {
@@ -40,7 +61,7 @@ app.post("/createuser", (req, res) => {
       });
       let token = jwt.sign({ email: user.email, userid: user._id }, "shhhhhhh");
       res.cookie("token", token);
-      res.redirect(`/post/${user._id}`);
+      res.redirect(`/posts`);
     });
   });
 });
