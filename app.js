@@ -46,6 +46,7 @@ app.get("/create", (req, res) => {
 });
 
 app.get("/posts", isLoggedin, (req, res) => {
+  console.log(req.user);
   res.send("your posts");
 });
 
@@ -76,6 +77,11 @@ app.post("/createuser", async (req, res) => {
 function isLoggedin(req, res, next) {
   if (req.cookies.token === "") {
     return res.send("You must be logged in!");
+  } else {
+    let data = jwt.verify(req.cookies.token, "shhhhhhh");
+    //this helps to attach the data of the user with the request so that the user data can be used for
+    //further tasks in the next route
+    req.user = data;
   }
   next();
 }
