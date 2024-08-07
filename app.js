@@ -31,7 +31,6 @@ app.post("/login", async (req, res) => {
   let user = await userSchema.findOne({ email });
   if (!user) return res.send("Something went wrong");
   bcrypt.compare(password, user.password, (err, result) => {
-    console.log(result);
     if (result === true) {
       let token = jwt.sign({ email: user.email, userid: user._id }, "shhhhhhh");
       res.cookie("token", token);
@@ -75,7 +74,9 @@ app.post("/createuser", async (req, res) => {
 //he cannot access these routes
 
 function isLoggedin(req, res, next) {
-  console.log(req.cookies);
+  if (req.cookies.token === "") {
+    return res.send("You must be logged in!");
+  }
   next();
 }
 
