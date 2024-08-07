@@ -21,6 +21,11 @@ app.get("/login", (req, res) => {
   res.render("login");
 });
 
+app.get("/logout", (req, res) => {
+  res.cookie("token", "");
+  res.redirect("/");
+});
+
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
   let user = await userSchema.findOne({ email });
