@@ -38,7 +38,7 @@ app.post("/createuser", (req, res) => {
         password: hash,
         age,
       });
-      let token = jwt.sign({ email: user.email }, "shhhhhhh");
+      let token = jwt.sign({ email: user.email, userid: user._id }, "shhhhhhh");
       res.cookie("token", token);
       res.redirect(`/post/${user._id}`);
     });
