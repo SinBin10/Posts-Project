@@ -41,7 +41,7 @@ app.get("/create", (req, res) => {
   res.render("create");
 });
 
-app.get("/posts", (req, res) => {
+app.get("/posts", isLoggedin, (req, res) => {
   res.send("your posts");
 });
 
@@ -65,5 +65,13 @@ app.post("/createuser", async (req, res) => {
     });
   });
 });
+
+//example of protected routes meaning that if the user is not logged in
+//he cannot access these routes
+
+function isLoggedin(req, res, next) {
+  console.log(req.cookies);
+  next();
+}
 
 app.listen(3000);
