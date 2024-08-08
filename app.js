@@ -90,6 +90,11 @@ app.post("/update/:id", isLoggedin, async (req, res) => {
   res.redirect("/posts");
 });
 
+app.get("/delete/:id", isLoggedin, async (req, res) => {
+  await postSchema.findOneAndDelete({ _id: req.params.id });
+  res.redirect("/posts");
+});
+
 app.post("/createuser", async (req, res) => {
   let { name, email, password, age } = req.body;
 
