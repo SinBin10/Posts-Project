@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/stylesheets/index.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <div class="h-full w-full p-4 bg-zinc-800">
+      <h1 class="text-3xl text-white mb-4">
+        <span class="text-zinc-400">Hey</span>, <%= user.username %>
+      </h1>
+      <form action="/posts" method="post">
+        <textarea
+          class="p-3 mr-4 bg-zinc-700 rounded-lg text-white w-1/3 h-36 resize-none outline-none"
+          placeholder="What's on your mind ?..."
+          name="content"
+        ></textarea>
+        <input
+          class="px-3 py-1 mt-3 cursor-pointer text-white rounded-xl bg-blue-500 block"
+          type="submit"
+          value="Create Post"
+        />
+      </form>
+    </div>
+  </body>
+</html>

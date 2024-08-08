@@ -45,9 +45,27 @@ app.get("/create", (req, res) => {
   res.render("create");
 });
 
-app.get("/posts", isLoggedin, (req, res) => {
+app.get("/posts", isLoggedin, async (req, res) => {
   console.log(req.user);
-  res.send("your posts");
+  const { userid } = req.user;
+  let user = await userSchema.findOne({ _id: userid });
+  await user.populate("post");
+  console.log(user);
+  res.render("post", { user });
+});
+
+app.post("/posts", isLoggedin, async (req, res) => {
+  const { userid } = req.user;
+  let post = await postSchema.create({
+    user: userid,
+    content: req.body.content,
+  });
+  let user = await userSchema.findOne({ _id: userid });
+  user.post.push(post._id);
+  await user.save();
+  console.log(post);
+  console.log(user);
+  res.redirect("/posts");
 });
 
 app.post("/createuser", async (req, res) => {
@@ -75,7 +93,7 @@ app.post("/createuser", async (req, res) => {
 //he cannot access these routes
 
 function isLoggedin(req, res, next) {
-  if (req.cookies.token === "") {
+  if (req.cookies.token === "" || req.cookies.token === undefined) {
     return res.send("You must be logged in!");
   } else {
     let data = jwt.verify(req.cookies.token, "shhhhhhh");
