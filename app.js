@@ -74,7 +74,19 @@ app.get("/like/:id", isLoggedin, async (req, res) => {
     post.likes.splice(post.likes.indexOf(userid), 1);
   }
   await post.save();
-  console.log(post);
+  res.redirect("/posts");
+});
+
+app.get("/edit/:id", isLoggedin, async (req, res) => {
+  let post = await postSchema.findOne({ _id: req.params.id });
+  res.render("edit", { post });
+});
+
+app.post("/update/:id", isLoggedin, async (req, res) => {
+  await postSchema.findOneAndUpdate(
+    { _id: req.params.id },
+    { content: req.body.content }
+  );
   res.redirect("/posts");
 });
 
