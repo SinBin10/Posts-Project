@@ -24,6 +24,14 @@
           value="Create Post"
         />
       </form>
+      <div class="post-container mt-4">
+        <% user.post.forEach((post)=>{ %>
+        <div class="posts w-96 mb-4 p-3 bg-zinc-700">
+          <h3 class="text-blue-600 mb-2">@<%=user.username%></h3>
+          <div class="text-gray-200"><%=post.content%></div>
+        </div>
+        <% }) %>
+      </div>
     </div>
   </body>
 </html>
