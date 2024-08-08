@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -131,4 +132,4 @@ function isLoggedin(req, res, next) {
   next();
 }
 
-app.listen(3000);
+app.listen(process.env.PORT);
