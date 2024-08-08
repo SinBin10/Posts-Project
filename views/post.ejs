@@ -38,8 +38,14 @@
         <div class="posts w-96 mb-4 p-3 bg-zinc-700">
           <h3 class="text-blue-500 mb-2">@<%=user.username%></h3>
           <div class="text-gray-200"><%=post.content%></div>
-          <div class="flex mt-4">
-            <a class="text-blue-500 mr-3 cursor-pointer" href="/like"> Like </a>
+          <div class="text-gray-200"><%=post.likes.length%> like</div>
+          <div class="flex mt-2">
+            <a
+              class="text-blue-500 mr-3 cursor-pointer"
+              href="/like/<%= post._id %>"
+            >
+              <%=post.likes.indexOf(user._id) === -1 ? "Like" : "Unlike"%>
+            </a>
             <a class="text-zinc-400" href="/edit">Edit</a>
           </div>
         </div>

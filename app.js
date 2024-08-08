@@ -46,11 +46,9 @@ app.get("/create", (req, res) => {
 });
 
 app.get("/posts", isLoggedin, async (req, res) => {
-  console.log(req.user);
   const { userid } = req.user;
   let user = await userSchema.findOne({ _id: userid });
   await user.populate("post");
-  console.log(user);
   res.render("post", { user });
 });
 
@@ -63,8 +61,20 @@ app.post("/posts", isLoggedin, async (req, res) => {
   let user = await userSchema.findOne({ _id: userid });
   user.post.push(post._id);
   await user.save();
+  res.redirect("/posts");
+});
+
+app.get("/like/:id", isLoggedin, async (req, res) => {
+  const { id } = req.params;
+  const { userid } = req.user;
+  let post = await postSchema.findOne({ _id: id });
+  if (post.likes.indexOf(userid) === -1) {
+    post.likes.push(userid);
+  } else {
+    post.likes.splice(post.likes.indexOf(userid), 1);
+  }
+  await post.save();
   console.log(post);
-  console.log(user);
   res.redirect("/posts");
 });
 
