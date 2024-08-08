@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <div class="h-full w-full p-4 bg-zinc-800">
+    <div class="min-h-screen w-full p-4 bg-zinc-800">
       <div class="flex justify-between items-center">
         <h1 class="text-3xl text-white mb-4">
           <span class="text-zinc-400">Hey</span>, <%= user.username %>
@@ -34,10 +34,14 @@
         />
       </form>
       <div class="post-container mt-4">
-        <% user.post.forEach((post)=>{ %>
+        <% user.post.reverse().forEach((post)=>{ %>
         <div class="posts w-96 mb-4 p-3 bg-zinc-700">
-          <h3 class="text-blue-600 mb-2">@<%=user.username%></h3>
+          <h3 class="text-blue-500 mb-2">@<%=user.username%></h3>
           <div class="text-gray-200"><%=post.content%></div>
+          <div class="flex mt-4">
+            <a class="text-blue-500 mr-3 cursor-pointer" href="/like"> Like </a>
+            <a class="text-zinc-400" href="/edit">Edit</a>
+          </div>
         </div>
         <% }) %>
       </div>
