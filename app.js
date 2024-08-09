@@ -6,6 +6,7 @@ const userSchema = require("./models/user");
 const postSchema = require("./models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const multer = require("multer");
 const cookieparser = require("cookie-parser");
 
 app.set("view engine", "ejs");
@@ -13,6 +14,18 @@ app.use(cookieparser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/images/uploads");
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
+    cb(null, file.fieldname + "-" + uniqueSuffix);
+  },
+});
+
+const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
   res.render("Home");
@@ -115,6 +128,16 @@ app.post("/createuser", async (req, res) => {
       res.redirect(`/posts`);
     });
   });
+});
+
+app.get("/test", (req, res) => {
+  res.render("test");
+});
+
+app.post("/upload", (req, res) => {
+  console.log(req.body);
+  console.log(req.files);
+  res.redirect("/test");
 });
 
 //example of protected routes meaning that if the user is not logged in
