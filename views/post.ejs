@@ -10,9 +10,18 @@
   <body>
     <div class="min-h-screen w-full p-4 bg-zinc-800">
       <div class="flex justify-between items-center">
-        <h1 class="text-3xl text-white mb-4">
-          <span class="text-zinc-400">Hey</span>, <%= user.username %>
-        </h1>
+        <div class="flex items-center">
+          <h1 class="text-3xl text-white mb-4">
+            <span class="text-zinc-400">Hey</span>, <%= user.username %>
+          </h1>
+          <a href="/test" class="h-10 w-10 ml-3 mb-3">
+            <img
+              class="h-full w-full rounded-lg object-cover overflow-hidden"
+              src="/images/uploads/<%= user.image %>"
+              alt="profile image"
+            />
+          </a>
+        </div>
         <div>
           <a
             class="inline-flex bg-red-600 text-white p-2 rounded-lg"

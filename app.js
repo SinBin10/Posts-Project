@@ -6,7 +6,7 @@ const userSchema = require("./models/user");
 const postSchema = require("./models/post");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const multer = require("multer");
+const upload = require("./config/multerconfig");
 const cookieparser = require("cookie-parser");
 
 app.set("view engine", "ejs");
@@ -14,18 +14,6 @@ app.use(cookieparser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images/uploads");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, file.fieldname + "-" + uniqueSuffix);
-  },
-});
-
-const upload = multer({ storage: storage });
 
 app.get("/", (req, res) => {
   res.render("Home");
@@ -134,10 +122,14 @@ app.get("/test", (req, res) => {
   res.render("test");
 });
 
-app.post("/upload", (req, res) => {
-  console.log(req.body);
-  console.log(req.files);
-  res.redirect("/test");
+app.post("/upload", isLoggedin, upload.single("image"), async (req, res) => {
+  console.log(req.file.filename);
+  await userSchema.findOneAndUpdate(
+    { _id: req.user.userid },
+    { image: req.file.filename },
+    { new: true }
+  );
+  res.redirect("/posts");
 });
 
 //example of protected routes meaning that if the user is not logged in

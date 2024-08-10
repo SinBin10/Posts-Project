@@ -9,6 +9,10 @@ let userSchema = mongoose.Schema({
   password: String,
   age: Number,
   post: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+  image: {
+    type: String,
+    default: "default.png",
+  },
 });
 
 module.exports = mongoose.model("user", userSchema);
